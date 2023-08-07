@@ -1,32 +1,84 @@
-import React from "react";
+"use client";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   ChangeLogin: any;
 };
 
 const Register = (props: Props) => {
+  const [Error, setError] = useState("");
+  const [ConfirmPass, setConfirmPass] = useState("");
+  const [Data, setData] = useState({
+    Alias: "",
+    Correo: "",
+    Password: "",
+    Information: {},
+  });
+  const cambioText = (event: any) => {
+    const { name, value } = event.target;
+    const newValues = {
+      ...Data,
+      [name]: value,
+    };
+    setData(newValues);
+  };
+
+  const RegistrarUser = () => {
+    (Data.Alias && Data.Correo && (Data.Password ==ConfirmPass)) ?
+    axios.post("http://localhost:3000/api/user", Data).then((x) => {
+      console.log(x);
+    }) :setError("Error en datos")
+  };
+
   return (
     <div className="seccionInter">
       <div className="Register">
         <h2 className="text-light"> Registrate</h2>
-        <label className=" mt-4">
+        {Error && <p className="text-danger">{Error}</p>}
+
+        <label className=" ">
           Alias
-          <input className="form-control" type="text" />
+          <input
+            name="Alias"
+            onChange={(e) => cambioText(e)}
+            className="form-control"
+            type="text"
+          />
         </label>
         <label className=" mt-4">
           Correo
-          <input className="form-control" type="text" />
+          <input
+            name="Correo"
+            onChange={(e) => cambioText(e)}
+            className="form-control"
+            type="text"
+          />
         </label>
         <label className=" mt-4">
           Password
-          <input className="form-control" type="password" />
+          <input
+            name="Password"
+            onChange={(e) => cambioText(e)}
+            className="form-control"
+            type="password"
+          />
         </label>
         <label className=" mt-4">
           Confirm Password
-          <input className="form-control" type="password" />
+          <input
+            name="PasswordConfirm"
+            className="form-control"
+            type="password"
+            onChange={(e) => setConfirmPass(e.target.value)}
+          />
         </label>
 
-        <button type="submit" className="btn btn-primary mt-4">
+        <button
+          type="submit"
+          className="btn btn-primary mt-4"
+          onClick={() => RegistrarUser()}
+        >
           Submit
         </button>
 
