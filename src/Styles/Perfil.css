@@ -1,0 +1,61 @@
+
+  .Perfil {
+    width: 100%;
+    display: flex;
+    background-color: rgb(51, 50, 50);
+  }
+  .About {
+    width: 30%;
+  }
+  .Proyects {
+    width: 70%;
+    margin: 20px 30px 30px 30px;
+    padding: 40px 30px 10px 30px;
+    border: 1px solid rgb(59, 59, 59);
+    border-radius: 30px;
+  }
+  .photo {
+    margin: 5%;
+    width: 90%;
+    border-radius: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+  
+    border: 3px solid rgb(217, 255, 0);
+    aspect-ratio: 1/1;
+  }
+  .information {
+    width: 100%;
+    padding: 5%;
+  }
+  .section_info{
+      
+  }
+  .linksSocila {
+    width: 100%;
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .techStack{
+      margin: 20px 0;
+  }
+  .skillbadge{
+      margin: 5px;
+      height: 35px;
+      padding-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .stack {
+      font-size: 15px;
+      height: 20px;
+      margin-top: 7px;
+  }
+  .proyectsList{
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+  } 
