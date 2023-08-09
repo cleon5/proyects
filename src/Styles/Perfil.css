@@ -1,6 +1,7 @@
 
   .Perfil {
     width: 100%;
+    color: white;
     display: flex;
     background-color: rgb(51, 50, 50);
   }

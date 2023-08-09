@@ -1,9 +1,50 @@
 "use client";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import "../../Styles/Perfil.css"
+import "../../Styles/Perfil.css";
+
+interface UserInfo2 {
+  _id: String;
+  Alias: String;
+  Name: String;
+  Description: String;
+  Image: String;
+  Correo: String;
+  Password: String;
+  Skills: Array<String>;
+  Information: { Proyects: Object[]; Experience: any[] };
+  Links:{GitHub:String, Linkedin:String}
+}
 
 const page = () => {
+  const [InfoUser, setInfoUser] = useState<UserInfo2>({
+    _id: "",
+    Alias: "",
+    Name: "",
+    Description: "",
+    Image: "",
+    Correo: "",
+    Password: "",
+    Information: {
+      Proyects: [],
+      Experience: [],
+    },
+    Skills: [],
+    Links:{GitHub:"",Linkedin:""}
+  });
+
+  const GetUser = async () => {
+    await axios
+      .get("http://localhost:3000/api/user/64d117058ff72de63c820e0e")
+      .then((data) => {
+        console.log(data.data);
+        setInfoUser(data.data);
+      });
+  };
+  useEffect(() => {
+    GetUser();
+  }, []);
+
   const Data = {
     name: "cleon",
     username: "cleon4",
@@ -29,8 +70,7 @@ const page = () => {
   };
 
   return (
-       <div className="Perfil">
-        
+    <div className="Perfil">
       <div className="About">
         <div
           className="photo"
@@ -57,7 +97,7 @@ const page = () => {
           <div className="section_info">
             <label>About me</label>
 
-            <p>{Data.descripcion}das</p>
+            <p>{InfoUser.Alias}</p>
           </div>
           <hr />
         </div>
@@ -67,58 +107,68 @@ const page = () => {
         <div className="techStack">
           <div className="d-flex justify-content-between">
             <h3>Tech Stack</h3>
-            <button data-bs-toggle="modal" data-bs-target="#modalStacks" className="btn btn-light" >
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#modalStacks"
+              className="btn btn-light"
+            >
               <i className="fa-solid fa-pen-to-square fa-2xl"></i>
             </button>
           </div>
 
           <hr />
-          {Data?.skills?.soft?.map((skill, index) => (
-            <span className={Data.bange[index] + " skillbadge"}> 
-              <div className="stack">
-                <i className="fa-brands fa-square-js fa-2xl"></i> {skill}
-              </div>
-            </span>
-          ))}
+          {InfoUser?.Skills.length > 0 ? (
+            InfoUser?.Skills?.map((skill, index) => (
+              <span key={index} className={Data.bange[index] + " skillbadge"}>
+                <div className="stack">
+                  <i className="fa-brands fa-square-js fa-2xl"></i> a{skill}
+                </div>
+              </span>
+            ))
+          ) : (
+            <p>Sin Skills</p>
+          )}
         </div>
 
         <div className="techStack">
           <h3>Proyects</h3>
           <hr />
           <div className="">
-            {/*Data?.proyects?.map((proyect, index) => (
-              <div className="card mb-3" style={{ width: "95%" }}>
-                <div className="row g-0">
-                  <div className="col-md-4">
-                    <a href="">
-                      <img
-                        src={data.image}
-                        style={{ backgroundSize: "cover", height: "100%" }}
-                        className="img-fluid rounded-start"
-                        alt="..."
-                      />
-                    </a>
-                  </div>
-                  <div className="col-md-8">
-                    <div className="card-body">
-                      <h5 className="card-title">{proyect.title}</h5>
-                      <hr />
-                      <p className="card-text">{proyect.description}</p>
-                      <p className="card-text">
-                        {proyect?.tecnologias?.map((skill, index) => (
+            {InfoUser?.Information?.Proyects?.map(
+              (proyect: any, index: any) => (
+                <div className="card mb-3" style={{ width: "95%" }}>
+                  <div className="row g-0">
+                    <div className="col-md-4">
+                      <a href="">
+                        <img
+                          src={Data.image}
+                          style={{ backgroundSize: "cover", height: "100%" }}
+                          className="img-fluid rounded-start"
+                          alt="..."
+                        />
+                      </a>
+                    </div>
+                    <div className="col-md-8">
+                      <div className="card-body">
+                        <h5 className="card-title">{proyect.title}</h5>
+                        <hr />
+                        <p className="card-text">{proyect.description}</p>
+                        <p className="card-text">
+                          {/*proyect?.tecnologias?.map((skill, index) => (
                           <span className={Data.bange[index] + " skillbadge"}>
                             <div className="stack">
                               <i className="fa-brands fa-square-js fa-2xl"></i>{" "}
                               {skill}
                             </div>
                           </span>
-                        ))}
-                      </p>
+                        ))*/}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-                        ))*/}
+              )
+            )}
           </div>
         </div>
 
@@ -130,6 +180,7 @@ const page = () => {
               <div
                 className="card mb-3"
                 style={{ width: "48%", backgroundColor: "" }}
+                key={index}
               >
                 <div className="row g-0">
                   <div className="col-md-4 p-3">
@@ -157,27 +208,43 @@ const page = () => {
         </div>
       </div>
 
-
-      <div className="modal fade" id="modalStacks"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        id="modalStacks"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">Modal stacks</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
+                Modal stacks
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-            <div className="modal-body">
-              ...
-            </div>
+            <div className="modal-body">...</div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save changes
+              </button>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
