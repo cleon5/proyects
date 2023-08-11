@@ -6,15 +6,16 @@ import "../styles.css";
 import Navbar from "../components/Navbar";
 
 const Page = () => {
-  const [IsLogin, setIsLogin] = useState(false);
+  const [IsLogin, setIsLogin] = useState(true);
 
   const changeLogin = () => {
     setIsLogin(!IsLogin);
   };
 
+
+
   return (
     <div>
-      <Navbar />
       {IsLogin ? (
         <Login ChangeLogin={changeLogin} />
       ) : (

@@ -1,11 +1,19 @@
-import React from "react";
+
+import React, {useState} from "react";
+//import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+//import { saveUserState } from "@/redux/features/UserSlice";
+
 
 const Navbar = () => {
+  //const UserData:any = useAppSelector((state) => state.UserSlice);
+  //const dispatch = useAppDispatch();  
+
+//style={{height:"60px"}} 
   return (
     <div>
-      <nav style={{height:"60px"}} className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+      <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/">
             Navbar
           </a>
           <button
@@ -22,7 +30,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarColor01">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link active" href="#">
+                <a className="nav-link active" href="/">
                   Home
                   <span className="visually-hidden">(current)</span>
                 </a>
@@ -35,6 +43,12 @@ const Navbar = () => {
               <li className="nav-item">
                 <a className="nav-link" href="/Perfil">
                   Perfil
+                </a>
+              </li>
+
+              <li className="nav-item">
+                <a className="nav-link" href="/Perfil">
+                  {"a"}
                 </a>
               </li>
              

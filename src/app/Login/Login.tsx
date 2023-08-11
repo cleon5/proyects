@@ -1,17 +1,22 @@
-"use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { saveUserState } from "@/redux/features/UserSlice";
 
 type Props = {
   ChangeLogin: any;
 };
 
 const Login = (props: Props) => {
+  const UserData:any = useAppSelector((state) => state.UserSlice);
+  const dispatch = useAppDispatch();
+
+
   const [Data, setData] = useState({
     Correo: "",
     Password: "",
   });
-
+  
   const cambioText = (event: any) => {
     const { name, value } = event.target;
     const newValues = {
@@ -21,8 +26,9 @@ const Login = (props: Props) => {
     setData(newValues);
   };
   const LoginUser = () => {
-    axios.post("http://localhost:3000/api/user/login", Data).then((x) => {
-      console.log(x);
+    axios.post("http://localhost:3000/api/user/login", Data).then((user) => {
+      console.log(user.data);
+      dispatch(saveUserState(user.data))
     });
   };
 
