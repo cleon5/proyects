@@ -2,7 +2,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../../Styles/Perfil.css";
-import Navbar from "../components/Navbar";
 import { useSelector } from 'react-redux'; // 
 
 interface UserInfo2 {
@@ -41,7 +40,7 @@ const page = () => {
     await axios
       .get("http://localhost:3000/api/user/64d117058ff72de63c820e0e")
       .then((data) => {
-        //console.log(data.data);
+        console.log(data.data);
         setInfoUser(data.data);
       });
   };

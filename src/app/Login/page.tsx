@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import "../styles.css";
-import Navbar from "../components/Navbar";
 
 const Page = () => {
   const [IsLogin, setIsLogin] = useState(true);

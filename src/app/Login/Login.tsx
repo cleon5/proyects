@@ -1,3 +1,4 @@
+"use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -8,8 +9,9 @@ type Props = {
 };
 
 const Login = (props: Props) => {
-  const UserData:any = useAppSelector((state) => state.UserSlice);
+  const UserData:any = useAppSelector((state) => state.UserSlice.User);
   const dispatch = useAppDispatch();
+  console.log(UserData)
 
 
   const [Data, setData] = useState({

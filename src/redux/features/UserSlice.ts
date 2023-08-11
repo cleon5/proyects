@@ -10,12 +10,12 @@ interface stateType {
   
 
 const initialState:stateType = {
-    User:null
+    User:{Alias:"asd"}
 }
 
 export const UserSlice = createSlice({
     name:"UserState",
-    initialState,
+    initialState:initialState,
     reducers:{
         saveUserState:(state, action: PayloadAction<user2>)=>{
             console.log(state, action.payload);
@@ -28,5 +28,5 @@ export const {
     saveUserState
 } = UserSlice.actions;
 
-export const selectAuthState = (state:any) => state.UserSlice;
+//export const selectAuthState = (state:any) => state.UserSlice;
 export default UserSlice.reducer;

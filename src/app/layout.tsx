@@ -3,10 +3,7 @@
 import "bootswatch/dist/Lux/bootstrap.min.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { store } from "../redux/store";
-import { Provider } from "react-redux";
 import { Providers } from "@/redux/providers";
-import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,10 +29,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <Providers >
-          
-          {children}
-          </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

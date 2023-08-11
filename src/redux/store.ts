@@ -4,8 +4,9 @@ import  UserSlice from "./features/UserSlice";
 
 export const store = configureStore({
   reducer: {
-    UserSlice
+    UserSlice,
   },
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 setupListeners(store.dispatch);
