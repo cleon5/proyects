@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { saveUserState } from "@/redux/features/UserSlice";
+import { LocalStorageSetUser } from "@/services/localStorage";
 
 type Props = {
   ChangeLogin: any;
@@ -12,6 +13,7 @@ const Login = (props: Props) => {
   const UserData:any = useAppSelector((state) => state.UserSlice.User);
   const dispatch = useAppDispatch();
   console.log(UserData)
+
 
 
   const [Data, setData] = useState({
@@ -31,6 +33,7 @@ const Login = (props: Props) => {
     axios.post("http://localhost:3000/api/user/login", Data).then((user) => {
       console.log(user.data);
       dispatch(saveUserState(user.data))
+      LocalStorageSetUser(user.data)
     });
   };
 

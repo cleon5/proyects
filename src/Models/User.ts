@@ -1,6 +1,5 @@
 import { Schema, model, models } from "mongoose";
 
-
 const infoDefault = {
   Proyects:[],
   Experience:[]
@@ -53,6 +52,14 @@ const User:Schema = new Schema(
       default:infoDefault,
       required: [true, "Information is required"],
     },
+    Proyects:{
+      type:Array,
+      default:[]
+    },
+    Experience:{
+      type:Array,
+      default:[]
+    },
     Links:{
       type:Object,
       default:{GitHub:"", Linkedin:""}
@@ -62,8 +69,6 @@ const User:Schema = new Schema(
     timestamps: true,
   }
 );
-
-
 
 const user =  models.User || model("User", User)
 

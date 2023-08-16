@@ -2,7 +2,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../../Styles/Perfil.css";
-import { useSelector } from 'react-redux'; // 
+import { useSelector } from "react-redux"; //
+import { LocalStorageGetUser } from "@/services/localStorage";
+import DatosPerfil from "./DatosPerfil";
+import Proyects from "./Proyects";
+import Work from "./Work";
 
 interface UserInfo2 {
   _id: String;
@@ -15,10 +19,12 @@ interface UserInfo2 {
   Skills: Array<String>;
   Information: { Proyects: Object[]; Experience: any[] };
   Links: { GitHub: String; Linkedin: String };
+  Proyects: Array<String>;
+  Experience: Array<String>;
 }
 
 const page = () => {
-  const UserData:any = useSelector((state:any) => state.UserSlice);
+  const UserData: any = useSelector((state: any) => state.UserSlice);
   console.log(UserData);
   const [InfoUser, setInfoUser] = useState<UserInfo2>({
     _id: "",
@@ -32,17 +38,89 @@ const page = () => {
       Proyects: [],
       Experience: [],
     },
+    Proyects: [],
+    Experience: [],
+    Skills: [],
+    Links: { GitHub: "", Linkedin: "" },
+  });
+  const [TmpUser, setTmpUser] = useState<UserInfo2>({
+    _id: "",
+    Alias: "",
+    Name: "",
+    Description: "",
+    Image: "",
+    Correo: "",
+    Password: "",
+    Information: {
+      Proyects: [],
+      Experience: [],
+    },
+    Proyects: [],
+    Experience: [],
     Skills: [],
     Links: { GitHub: "", Linkedin: "" },
   });
 
-  const GetUser = async () => {
+  const saveUserState = async () => {
+    await axios
+      .put(`http://localhost:3000/api/user/${InfoUser._id}`, TmpUser)
+      .then((data) => {
+        console.log(data.data);
+      });
+  };
+
+  const getUserAxios = async () => {
     await axios
       .get("http://localhost:3000/api/user/64d117058ff72de63c820e0e")
       .then((data) => {
         console.log(data.data);
         setInfoUser(data.data);
+        setTmpUser(data.data);
       });
+  };
+
+  const changeText = (event: any) => {
+    const { id, value, name } = event.target;
+
+    const newValues = {
+      ...TmpUser,
+      [id]: value,
+    };
+
+    if (name) {
+      console.log(name);
+      const newValuesObject = {
+        ...TmpUser,
+        [name]: {
+          ...TmpUser.Links,
+          [id]: value,
+        },
+      };
+      setTmpUser(newValuesObject);
+    }
+    setTmpUser(newValues);
+  };
+  const changeTextProyects = (event: any) => {
+    const { id, value, name } = event.target;
+
+    const newValuesObject = {
+      ...TmpUser,
+      [name]: {
+        ...TmpUser.Proyects,
+        [id]: value,
+      },
+
+      //setTmpUser(newValuesObject);
+    };
+  };
+
+  const GetUser = async () => {
+    if (UserData.User == null) {
+      let UserTmp: any = LocalStorageGetUser();
+      UserTmp ? setInfoUser(UserTmp) : getUserAxios();
+    } else {
+      setInfoUser(UserData.User);
+    }
   };
   useEffect(() => {
     GetUser();
@@ -75,37 +153,11 @@ const page = () => {
   return (
     <>
       <div className="Perfil">
-        <div className="About">
-          <div
-            className="photo"
-            style={{ backgroundImage: `url(${Data.image})` }}
-          ></div>
-          <div className="information">
-            <h3>{Data.username}</h3>
-            <div className="linksSocila">
-              <i
-                className="fa-brands fa-facebook fa-2xl"
-                style={{ color: "#ffffff" }}
-              ></i>
-              <i
-                className="fa-brands fa-facebook fa-2xl"
-                style={{ color: "#ffffff" }}
-              ></i>
-              <i
-                className="fa-brands fa-facebook fa-2xl"
-                style={{ color: "#ffffff" }}
-              ></i>
-            </div>
-
-            <hr />
-            <div className="section_info">
-              <label>About me</label>
-
-              <p>{InfoUser.Alias}</p>
-            </div>
-            <hr />
-          </div>
-        </div>
+        <DatosPerfil
+          changeText={changeText}
+          InfoUser={InfoUser}
+          saveUserState={saveUserState}
+        />
 
         <div className="Proyects">
           <div className="techStack">
@@ -134,118 +186,17 @@ const page = () => {
             )}
           </div>
 
-          <div className="techStack">
-            <h3>Proyects</h3>
-            <hr />
-            <div className="">
-              {InfoUser?.Information?.Proyects?.map(
-                (proyect: any, index: any) => (
-                  <div className="card mb-3" style={{ width: "95%" }}>
-                    <div className="row g-0">
-                      <div className="col-md-4">
-                        <a href="">
-                          <img
-                            src={Data.image}
-                            style={{ backgroundSize: "cover", height: "100%" }}
-                            className="img-fluid rounded-start"
-                            alt="..."
-                          />
-                        </a>
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">{proyect.title}</h5>
-                          <hr />
-                          <p className="card-text">{proyect.description}</p>
-                          <p className="card-text">
-                            {/*proyect?.tecnologias?.map((skill, index) => (
-                          <span className={Data.bange[index] + " skillbadge"}>
-                            <div className="stack">
-                              <i className="fa-brands fa-square-js fa-2xl"></i>{" "}
-                              {skill}
-                            </div>
-                          </span>
-                        ))*/}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
+          <Proyects
+            changeText={changeText}
+            InfoUser={InfoUser}
+            saveUserState={saveUserState}
+          />
 
-          <div className="techStack">
-            <h3>Work</h3>
-            <hr />
-            <div className="proyectsList">
-              {Data?.skills?.hard?.map((skill, index) => (
-                <div
-                  className="card mb-3"
-                  style={{ width: "48%", backgroundColor: "" }}
-                  key={index}
-                >
-                  <div className="row g-0">
-                    <div className="col-md-4 p-3">
-                      <p className="card-text text-end">
-                        Junio 2022 a Julio 2023{" "}
-                      </p>
-                      <p className="card-text text-end">
-                        <small className="text-body-secondary">Cenedic</small>
-                      </p>
-                    </div>
-                    <div className="col-md-8">
-                      <div className="card-body">
-                        <h5 className="card-title">Programador jr </h5>
-                        <hr />
-                        <p className="card-text">
-                          Se creo una web en react para la gestion de tareas y
-                          el despliege de varios cursos
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="modal fade"
-          id="modalStacks"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Modal stacks
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">...</div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
+          <Work
+            changeText={changeText}
+            InfoUser={InfoUser}
+            saveUserState={saveUserState}
+          />
         </div>
       </div>
     </>

@@ -5,12 +5,12 @@ import Register from "./Register";
 import "../styles.css";
 
 const Page = () => {
+
   const [IsLogin, setIsLogin] = useState(true);
 
   const changeLogin = () => {
     setIsLogin(!IsLogin);
   };
-
 
 
   return (

@@ -1,5 +1,5 @@
 import { connectDb } from "../../../../utils/mongoose";
-import User from "../../../../Models/User";
+import Proyect from "../../../../Models/Proyect";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -8,9 +8,9 @@ export async function GET(
 ) {
   connectDb();
   try {
-    const userData = await User.findById(params.id);
+    const ProyectData = await Proyect.findById(params.id);
 
-    if (!userData)
+    if (!ProyectData)
       return new NextResponse(
         JSON.stringify({
           message: "Task not found",
@@ -20,7 +20,7 @@ export async function GET(
         }
       );
 
-    return new NextResponse(JSON.stringify(userData));
+    return new NextResponse(JSON.stringify(ProyectData));
   } catch (error: any) {
     return new NextResponse(JSON.stringify(error.message), {
       status: 400,
@@ -33,18 +33,19 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   await connectDb();
+
   try {
     const body = await request.json();
-    const update = await User.findByIdAndUpdate(params.id, body, {
-      new: true
+    console.log("put");
+
+    const update = await Proyect.findByIdAndUpdate(params.id, body, {
+      new: true,
     });
     console.log(update);
 
-    return NextResponse.json(
-      update
-    );
+    return NextResponse.json(update);
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json(error.message, {
       status: 400,
     });

@@ -10,7 +10,7 @@ interface stateType {
   
 
 const initialState:stateType = {
-    User:{Alias:"asd"}
+    User:null
 }
 
 export const UserSlice = createSlice({
