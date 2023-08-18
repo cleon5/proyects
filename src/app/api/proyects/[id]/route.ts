@@ -13,7 +13,7 @@ export async function GET(
     if (!ProyectData)
       return new NextResponse(
         JSON.stringify({
-          message: "Task not found",
+          message: "Proyect not found",
         }),
         {
           status: 404,

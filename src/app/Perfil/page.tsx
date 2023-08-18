@@ -7,6 +7,7 @@ import { LocalStorageGetUser } from "@/services/localStorage";
 import DatosPerfil from "./DatosPerfil";
 import Proyects from "./Proyects";
 import Work from "./Work";
+import { GetProyectId, GetUserID, UpdateUser } from "@/services/ConsultsAxios";
 
 interface UserInfo2 {
   _id: String;
@@ -60,6 +61,7 @@ const page = () => {
     Skills: [],
     Links: { GitHub: "", Linkedin: "" },
   });
+  const [ProyectsList, setProyects] = useState<Array<Object>>([])
 
   const saveUserState = async () => {
     await axios
@@ -69,26 +71,10 @@ const page = () => {
       });
   };
 
-  const getUserAxios = async () => {
-    await axios
-      .get("http://localhost:3000/api/user/64d117058ff72de63c820e0e")
-      .then((data) => {
-        console.log(data.data);
-        setInfoUser(data.data);
-        setTmpUser(data.data);
-      });
-  };
-
   const changeText = (event: any) => {
     const { id, value, name } = event.target;
 
-    const newValues = {
-      ...TmpUser,
-      [id]: value,
-    };
-
     if (name) {
-      console.log(name);
       const newValuesObject = {
         ...TmpUser,
         [name]: {
@@ -98,32 +84,58 @@ const page = () => {
       };
       setTmpUser(newValuesObject);
     }
-    setTmpUser(newValues);
+    else{
+      const newValues = {
+        ...TmpUser,
+        [id]: value,
+      };
+      setTmpUser(newValues);
+    }
+    console.log(TmpUser)
   };
-  const changeTextProyects = (event: any) => {
-    const { id, value, name } = event.target;
-
+  
+  const AddProyect = async(id: string) => {
+    let tmpControl = TmpUser.Proyects
+    tmpControl.push(id)
+    console.log(tmpControl);
     const newValuesObject = {
       ...TmpUser,
-      [name]: {
-        ...TmpUser.Proyects,
-        [id]: value,
-      },
-
-      //setTmpUser(newValuesObject);
+      Proyects: tmpControl
     };
+    setTmpUser(newValuesObject);
+    await saveUserState();
   };
+
+  const GetProyect = async (useData:any) =>{
+    console.log(InfoUser)
+    let tmpState:Array<Object> = [];
+    useData?.Proyects?.map(async (id:String) => {
+        tmpState.push(await GetProyectId(id))
+        console.log(id)
+    })
+    setProyects(tmpState);
+  }
 
   const GetUser = async () => {
     if (UserData.User == null) {
       let UserTmp: any = LocalStorageGetUser();
-      UserTmp ? setInfoUser(UserTmp) : getUserAxios();
+      let toSet = UserTmp
+        ? UserTmp
+        : await GetUserID("64d117058ff72de63c820e0e");
+      setInfoUser(toSet);
+      setTmpUser(toSet)
+      GetProyect(toSet)
     } else {
       setInfoUser(UserData.User);
+      setTmpUser(UserData.User)
+      GetProyect(UserData.User)
     }
+   
   };
   useEffect(() => {
     GetUser();
+
+
   }, []);
 
   const Data = {
@@ -189,6 +201,7 @@ const page = () => {
           <Proyects
             changeText={changeText}
             InfoUser={InfoUser}
+            AddProyect={AddProyect}
             saveUserState={saveUserState}
           />
 

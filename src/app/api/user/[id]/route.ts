@@ -34,7 +34,10 @@ export async function PUT(
 ) {
   await connectDb();
   try {
-    const body = await request.json();
+    let body = await request.json();
+    console.log(body)
+    console.log('dasda')
+
     const update = await User.findByIdAndUpdate(params.id, body, {
       new: true
     });
