@@ -1,5 +1,5 @@
 import React from 'react'
-
+import ImageNoUSer from '../../../public/Images/NoUser.jpg'
 type Props = {
     changeText: any;
     InfoUser:any;
@@ -11,7 +11,7 @@ const DatosPerfil = (props:Props) => {
         <div className="About">
           <div
             className="photo"
-            style={{ backgroundImage: `url()` }}
+  style={{backgroundImage: `url(../../../public/Images/NoUser.jpg) `}/* props.InfoUser.Image ? {backgroundImage: `url(${props.InfoUser.Image})`}: {backgroundImage: `url(../../public/Images/NoUser.jpg)`}*/}
           ></div>
           <div className="information">
             <h3>{props.InfoUser.Alias}</h3>

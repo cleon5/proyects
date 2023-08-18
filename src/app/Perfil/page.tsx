@@ -62,6 +62,7 @@ const page = () => {
     Links: { GitHub: "", Linkedin: "" },
   });
   const [ProyectsList, setProyects] = useState<Array<Object>>([])
+  const [WorkList, setWorkList] = useState<Array<Object>>([])
 
   const saveUserState = async () => {
     await axios
@@ -111,7 +112,6 @@ const page = () => {
     let tmpState:Array<Object> = [];
     useData?.Proyects?.map(async (id:String) => {
         tmpState.push(await GetProyectId(id))
-        console.log(id)
     })
     setProyects(tmpState);
   }
@@ -169,6 +169,7 @@ const page = () => {
           changeText={changeText}
           InfoUser={InfoUser}
           saveUserState={saveUserState}
+          
         />
 
         <div className="Proyects">
@@ -203,6 +204,7 @@ const page = () => {
             InfoUser={InfoUser}
             AddProyect={AddProyect}
             saveUserState={saveUserState}
+            ProyectsList={ProyectsList}
           />
 
           <Work

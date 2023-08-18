@@ -7,6 +7,7 @@ type Props = {
   InfoUser: any;
   saveUserState: any;
   AddProyect:any,
+  ProyectsList:any,
 };
 
 type ProyectModel = {
@@ -22,7 +23,7 @@ const Proyects = (props: Props) => {
     Title: "",
     Description: "",
     Image: "",
-    Skills: [],
+    Skills: ['Angular', 'Js', "React"],
     Links: { GitHub: "", url: "" },
   });
   const [TmpProyect, setTmpProyect] = useState<ProyectModel>({
@@ -32,7 +33,7 @@ const Proyects = (props: Props) => {
     Skills: [],
     Links: { GitHub: "", url: "" },
   });
-
+  
   const changeTextProyects = (event: any) => {
     const { id, value, name } = event.target;
 
@@ -75,7 +76,7 @@ const Proyects = (props: Props) => {
     props.AddProyect(data._id);
 
   };
-
+  const skills=['Angular', 'Js', "React","React","React"];
   return (
     <>
       <div className="techStack">
@@ -91,14 +92,14 @@ const Proyects = (props: Props) => {
         </div>
         <hr />
         <div className="">
-          {props.InfoUser?.Information?.Proyects?.map(
+          {props?.ProyectsList?.map(
             (proyect: any, index: any) => (
-              <div className="card mb-3" style={{ width: "95%" }}>
+              <div className="card text-white bg-primary mb-3" key={index} style={{ width: "95%" }}>
                 <div className="row g-0">
                   <div className="col-md-4">
-                    <a href="">
+                    <a href=''>
                       <img
-                        src={""}
+                        src={"https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE"}
                         style={{ backgroundSize: "cover", height: "100%" }}
                         className="img-fluid rounded-start"
                         alt="..."
@@ -107,18 +108,19 @@ const Proyects = (props: Props) => {
                   </div>
                   <div className="col-md-8">
                     <div className="card-body">
-                      <h5 className="card-title">{proyect.title}</h5>
+                      <h5 className="card-title">{proyect.Title}</h5>
                       <hr />
-                      <p className="card-text">{proyect.description}</p>
-                      <p className="card-text">
-                        {/*proyect?.tecnologias?.map((skill, index) => (
-                          <span className={Data.bange[index] + " skillbadge"}>
+                      <p className="card-text">{proyect.Description}</p>
+                      <hr />
+                      <p className="card-text d-flex flex-wrap">
+                        {skills?.map((skill:any, index:any) => (
+                          <span key={index} className={"badge rounded-pill text-bg-secondary skillbadge"}>
                             <div className="stack">
-                              <i className="fa-brands fa-square-js fa-2xl"></i>{" "}
+                              <i className="fa-brands fa-square-js fa-2xl"></i>
                               {skill}
                             </div>
                           </span>
-                        ))*/}
+                        ))}
                       </p>
                     </div>
                   </div>
