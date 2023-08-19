@@ -26,7 +26,6 @@ interface UserInfo2 {
 
 const page = () => {
   const UserData: any = useSelector((state: any) => state.UserSlice);
-  console.log(UserData);
   const [InfoUser, setInfoUser] = useState<UserInfo2>({
     _id: "",
     Alias: "",
@@ -61,7 +60,7 @@ const page = () => {
     Skills: [],
     Links: { GitHub: "", Linkedin: "" },
   });
-  const [ProyectsList, setProyects] = useState<Array<Object>>([])
+  const [ProyectsList, setProyectsList] = useState<Array<Object>>([])
   const [WorkList, setWorkList] = useState<Array<Object>>([])
 
   const saveUserState = async () => {
@@ -108,12 +107,15 @@ const page = () => {
   };
 
   const GetProyect = async (useData:any) =>{
-    console.log(InfoUser)
+    console.log(useData)
     let tmpState:Array<Object> = [];
     useData?.Proyects?.map(async (id:String) => {
-        tmpState.push(await GetProyectId(id))
+      console.log(id)
+      let p=await GetProyectId(id)
+        tmpState.push(p) 
     })
-    setProyects(tmpState);
+    setProyectsList(tmpState);
+    console.log(tmpState)
   }
 
   const GetUser = async () => {
@@ -122,13 +124,14 @@ const page = () => {
       let toSet = UserTmp
         ? UserTmp
         : await GetUserID("64d117058ff72de63c820e0e");
+      await GetProyect(toSet)
       setInfoUser(toSet);
       setTmpUser(toSet)
-      GetProyect(toSet)
+
     } else {
       setInfoUser(UserData.User);
       setTmpUser(UserData.User)
-      GetProyect(UserData.User)
+      await GetProyect(UserData.User)
     }
    
   };
@@ -161,10 +164,9 @@ const page = () => {
       "badge rounded-pill text-bg-dark",
     ],
   };
-
   return (
     <>
-      <div className="Perfil">
+      <div className="Perfil text-white ">
         <DatosPerfil
           changeText={changeText}
           InfoUser={InfoUser}
@@ -199,13 +201,15 @@ const page = () => {
             )}
           </div>
 
-          <Proyects
+         {
+          InfoUser  ?  <Proyects
             changeText={changeText}
             InfoUser={InfoUser}
             AddProyect={AddProyect}
             saveUserState={saveUserState}
-            ProyectsList={ProyectsList}
-          />
+            List={ProyectsList}
+          /> : <p>No muestra Proyects</p> 
+         }
 
           <Work
             changeText={changeText}

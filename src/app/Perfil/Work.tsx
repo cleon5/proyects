@@ -33,7 +33,7 @@ const Work = (props: Props) => {
     <>
       <div className="techStack">
         <div className="d-flex justify-content-between">
-          <h3>Work</h3>
+          <h3 className="text-white">Work</h3>
           <button
             data-bs-toggle="modal"
             data-bs-target="#modalWork"
@@ -98,6 +98,7 @@ const Work = (props: Props) => {
                   <label htmlFor="Title" className="form-label">
                     Title
                   </label>
+                  
                   <input
                     type="text"
                     className="form-control"

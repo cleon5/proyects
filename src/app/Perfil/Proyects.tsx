@@ -1,13 +1,14 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { CreateProyect } from "@/services/ConsultsAxios";
-import axios from "axios";
+import { GetProyectId, GetUserID, UpdateUser } from "@/services/ConsultsAxios";
 
 type Props = {
   changeText: any;
   InfoUser: any;
   saveUserState: any;
-  AddProyect:any,
-  ProyectsList:any,
+  AddProyect: any;
+  List: any;
 };
 
 type ProyectModel = {
@@ -19,13 +20,7 @@ type ProyectModel = {
 };
 
 const Proyects = (props: Props) => {
-  const [ProyectState, setProyectState] = useState<ProyectModel>({
-    Title: "",
-    Description: "",
-    Image: "",
-    Skills: ['Angular', 'Js', "React"],
-    Links: { GitHub: "", url: "" },
-  });
+  const [ProyectState, setProyectState] = useState<Array<Object>>([]);
   const [TmpProyect, setTmpProyect] = useState<ProyectModel>({
     Title: "",
     Description: "",
@@ -33,14 +28,80 @@ const Proyects = (props: Props) => {
     Skills: [],
     Links: { GitHub: "", url: "" },
   });
-  
+
+  async function GetProyect() {
+    let tmpP: Array<Object> = [];
+    props.InfoUser.Proyects.map(async (id: String) => {
+      let x = await GetProyectId(id);
+      tmpP.push(x);
+    });
+    setProyectState(tmpP);
+  }
+
+  useEffect(() => {
+    console.log(props.List);
+    console.log(Object.values(props.List));
+
+    GetProyect();
+  }, []);
+
+  const renderProyect = () => {
+    console.log(props.InfoUser.Proyects.length);
+    console.log(ProyectState);
+    let x = ProyectState.map((proyect: any, index: any) => (
+      <div
+        className="card text-white bg-primary mb-3"
+        key={index}
+        style={{ width: "95%" }}
+      >
+        <div className="row g-0">
+          <div className="col-md-4">
+            <a href="">
+              <img
+                src={"https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE"}
+                style={{ backgroundSize: "cover", height: "100%" }}
+                className="img-fluid rounded-start"
+                alt="..."
+              />
+            </a>
+          </div>
+          <div className="col-md-8">
+            <div className="card-body">
+              <h5 className="card-title">{proyect.Title}</h5>
+              <hr />
+              <p className="card-text">{proyect.Description}</p>
+              <hr />
+              <p className="card-text d-flex flex-wrap">
+                {skills?.map((skill: any, index: any) => (
+                  <span
+                    key={index}
+                    className={
+                      "badge rounded-pill text-bg-secondary skillbadge"
+                    }
+                  >
+                    <div className="stack">
+                      <i className="fa-brands fa-square-js fa-2xl"></i>
+                      {skill}
+                    </div>
+                  </span>
+                ))}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ));
+
+    return x;
+  };
+
   const changeTextProyects = (event: any) => {
     const { id, value, name } = event.target;
 
     if (id == "Skills") {
-      let tmpSkills = TmpProyect.Skills
-      let xID = [value]
-      tmpSkills.push(value)
+      let tmpSkills = TmpProyect.Skills;
+      let xID = [value];
+      tmpSkills.push(value);
       const newValuesSkills = {
         ...TmpProyect,
         [id]: xID,
@@ -56,9 +117,9 @@ const Proyects = (props: Props) => {
           [id]: value,
         },
       };
-      
+
       setTmpProyect(newValuesObject);
-    }else{
+    } else {
       const newValues = {
         ...TmpProyect,
         [id]: value,
@@ -66,17 +127,15 @@ const Proyects = (props: Props) => {
       setTmpProyect(newValues);
     }
 
-    console.log(TmpProyect)
+    console.log(TmpProyect);
   };
-
 
   const NewProyect = async () => {
     let data = await CreateProyect(TmpProyect);
     console.log(data);
     props.AddProyect(data._id);
-
   };
-  const skills=['Angular', 'Js', "React","React","React"];
+  const skills = ["Angular", "Js", "React", "React", "React"];
   return (
     <>
       <div className="techStack">
@@ -90,16 +149,29 @@ const Proyects = (props: Props) => {
             <i className="fa-solid fa-pen-to-square fa-2xl"></i>
           </button>
         </div>
+        {ProyectState.length == 2 ? (
+          <p>{ProyectState.length}</p>
+        ) : (
+          <p>{ProyectState.length +'1'}</p>
+        )}
+
         <hr />
         <div className="">
-          {props?.ProyectsList?.map(
-            (proyect: any, index: any) => (
-              <div className="card text-white bg-primary mb-3" key={index} style={{ width: "95%" }}>
+          11
+          {ProyectState.length > 0 &&
+            Object.values(ProyectState)?.map((proyect: any, index: any) => (
+              <div
+                className="card text-white bg-primary mb-3"
+                key={index}
+                style={{ width: "95%" }}
+              >
                 <div className="row g-0">
                   <div className="col-md-4">
-                    <a href=''>
+                    <a href="">
                       <img
-                        src={"https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE"}
+                        src={
+                          "https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE"
+                        }
                         style={{ backgroundSize: "cover", height: "100%" }}
                         className="img-fluid rounded-start"
                         alt="..."
@@ -113,8 +185,13 @@ const Proyects = (props: Props) => {
                       <p className="card-text">{proyect.Description}</p>
                       <hr />
                       <p className="card-text d-flex flex-wrap">
-                        {skills?.map((skill:any, index:any) => (
-                          <span key={index} className={"badge rounded-pill text-bg-secondary skillbadge"}>
+                        {skills?.map((skill: any, index: any) => (
+                          <span
+                            key={index}
+                            className={
+                              "badge rounded-pill text-bg-secondary skillbadge"
+                            }
+                          >
                             <div className="stack">
                               <i className="fa-brands fa-square-js fa-2xl"></i>
                               {skill}
@@ -126,13 +203,13 @@ const Proyects = (props: Props) => {
                   </div>
                 </div>
               </div>
-            )
-          )}
+            ))}
+
         </div>
       </div>
 
       <div
-        className="modal fade"
+        className="modal fade modal-lg"
         id="modalProyects"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -152,78 +229,99 @@ const Proyects = (props: Props) => {
             </div>
             <div className="modal-body">
               <form className="">
-                <div className="mb-3">
-                  <label htmlFor="Title" className="form-label">
+                <div className="form-group row mt-2">
+                  <label htmlFor="Title" className="col-sm-2 col-form-label">
                     Title
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="Title"
-                    onChange={(e) => changeTextProyects(e)}
-                  />
+                  <div className="col-sm-10">
+                    <input
+                      placeholder="..."
+                      type="text"
+                      className="form-control"
+                      id="Title"
+                      onChange={(e) => changeTextProyects(e)}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="Description" className="form-label">
+                <div className="form-group row mt-2">
+                  <label
+                    htmlFor="Description"
+                    className="col-sm-2 col-form-label"
+                  >
                     Description
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="Description"
-                    onChange={(e) => changeTextProyects(e)}
-                  />
+                  <div className="col-sm-10">
+                    <textarea
+                      placeholder="..."
+                      rows={5}
+                      className="form-control"
+                      id="Description"
+                      onChange={(e) => changeTextProyects(e)}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="Image" className="form-label">
+                <div className="form-group row mt-2">
+                  <label htmlFor="Image" className="col-sm-2 col-form-label">
                     Image
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="Image"
-                    onChange={(e) => changeTextProyects(e)}
-                  />
+                  <div className="col-sm-10">
+                    <input
+                      placeholder="..."
+                      type="text"
+                      className="form-control"
+                      id="Image"
+                      onChange={(e) => changeTextProyects(e)}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="GitHub" className="form-label">
+                <div className="form-group row mt-2">
+                  <label htmlFor="GitHub" className="col-sm-2 col-form-label">
                     GitHub
                   </label>
-                  <input
-                    type="text"
-                    name="Links"
-                    className="form-control"
-                    id="GitHub"
-                    onChange={(e) => changeTextProyects(e)}
-                  />
+                  <div className="col-sm-10">
+                    <input
+                      placeholder="..."
+                      type="text"
+                      name="Links"
+                      className="form-control"
+                      id="GitHub"
+                      onChange={(e) => changeTextProyects(e)}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="url" className="form-label">
+                <div className="form-group row mt-2">
+                  <label htmlFor="url" className="col-sm-2 col-form-label">
                     Url
                   </label>
-                  <input
-                    type="text"
-                    name="Links"
-                    className="form-control"
-                    id="url"
-                    onChange={(e) => changeTextProyects(e)}
-                  />
+                  <div className="col-sm-10">
+                    <input
+                      placeholder="..."
+                      type="text"
+                      name="Links"
+                      className="form-control"
+                      id="url"
+                      onChange={(e) => changeTextProyects(e)}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="Skills" className="form-label">
+                <div className="form-group row mt-2">
+                  <label htmlFor="Skills" className="col-sm-2 col-form-label">
                     Skills
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="Skills"
-                    onChange={(e) => changeTextProyects(e)}
-                  />
+                  <div className="col-sm-10">
+                    <input
+                      placeholder="..."
+                      type="text"
+                      className="form-control"
+                      id="Skills"
+                      onChange={(e) => changeTextProyects(e)}
+                    />
+                  </div>
                 </div>
               </form>
             </div>

@@ -5,7 +5,7 @@ const urlBase = "http://localhost:3000/api/";
 //Consultas Axios User
 export const GetUserID = async (id: String) => {
   let response = await axios.get(`${urlBase}user/${id}`);
-  console.log(response.data);
+  //console.log(response.data);
   return response.data;
 };
 
@@ -23,7 +23,7 @@ export const UpdateUser = async (id: String, DataUser: Object) => {
 
 export const GetProyectId = async (id: String) => {
   let response = await axios.get(`${urlBase}proyects/${id}`);
-  console.log(response.data);
+  //console.log(response.data);
   return response.data;
 };
 
