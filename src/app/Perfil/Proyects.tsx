@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { CreateProyect } from "@/services/ConsultsAxios";
-import { GetProyectId, GetUserID, UpdateUser } from "@/services/ConsultsAxios";
+import { GetProyectId} from "@/services/ConsultsAxios";
 
 type Props = {
   changeText: any;
@@ -30,70 +30,16 @@ const Proyects = (props: Props) => {
   });
 
   async function GetProyect() {
-    let tmpP: Array<Object> = [];
     props.InfoUser.Proyects.map(async (id: String) => {
       let x = await GetProyectId(id);
-      tmpP.push(x);
+      setProyectState(state=> [...state, x])
     });
-    setProyectState(tmpP);
   }
 
   useEffect(() => {
-    console.log(props.List);
-    console.log(Object.values(props.List));
-
     GetProyect();
   }, []);
 
-  const renderProyect = () => {
-    console.log(props.InfoUser.Proyects.length);
-    console.log(ProyectState);
-    let x = ProyectState.map((proyect: any, index: any) => (
-      <div
-        className="card text-white bg-primary mb-3"
-        key={index}
-        style={{ width: "95%" }}
-      >
-        <div className="row g-0">
-          <div className="col-md-4">
-            <a href="">
-              <img
-                src={"https://th.bing.com/th/id/OIG.lVXjWwlHyIo4QdjnC1YE"}
-                style={{ backgroundSize: "cover", height: "100%" }}
-                className="img-fluid rounded-start"
-                alt="..."
-              />
-            </a>
-          </div>
-          <div className="col-md-8">
-            <div className="card-body">
-              <h5 className="card-title">{proyect.Title}</h5>
-              <hr />
-              <p className="card-text">{proyect.Description}</p>
-              <hr />
-              <p className="card-text d-flex flex-wrap">
-                {skills?.map((skill: any, index: any) => (
-                  <span
-                    key={index}
-                    className={
-                      "badge rounded-pill text-bg-secondary skillbadge"
-                    }
-                  >
-                    <div className="stack">
-                      <i className="fa-brands fa-square-js fa-2xl"></i>
-                      {skill}
-                    </div>
-                  </span>
-                ))}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    ));
-
-    return x;
-  };
 
   const changeTextProyects = (event: any) => {
     const { id, value, name } = event.target;
@@ -126,13 +72,10 @@ const Proyects = (props: Props) => {
       };
       setTmpProyect(newValues);
     }
-
-    console.log(TmpProyect);
   };
 
   const NewProyect = async () => {
     let data = await CreateProyect(TmpProyect);
-    console.log(data);
     props.AddProyect(data._id);
   };
   const skills = ["Angular", "Js", "React", "React", "React"];
@@ -140,7 +83,7 @@ const Proyects = (props: Props) => {
     <>
       <div className="techStack">
         <div className="d-flex justify-content-between">
-          <h3>Proyects</h3>
+          <h3 className="text-white">Proyects</h3>
           <button
             data-bs-toggle="modal"
             data-bs-target="#modalProyects"
@@ -149,15 +92,9 @@ const Proyects = (props: Props) => {
             <i className="fa-solid fa-pen-to-square fa-2xl"></i>
           </button>
         </div>
-        {ProyectState.length == 2 ? (
-          <p>{ProyectState.length}</p>
-        ) : (
-          <p>{ProyectState.length +'1'}</p>
-        )}
 
         <hr />
         <div className="">
-          11
           {ProyectState.length > 0 &&
             Object.values(ProyectState)?.map((proyect: any, index: any) => (
               <div

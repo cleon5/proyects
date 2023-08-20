@@ -60,8 +60,8 @@ const page = () => {
     Skills: [],
     Links: { GitHub: "", Linkedin: "" },
   });
-  const [ProyectsList, setProyectsList] = useState<Array<Object>>([])
-  const [WorkList, setWorkList] = useState<Array<Object>>([])
+  const [ProyectsList, setProyectsList] = useState<Array<Object>>([]);
+  const [WorkList, setWorkList] = useState<Array<Object>>([]);
 
   const saveUserState = async () => {
     await axios
@@ -83,40 +83,49 @@ const page = () => {
         },
       };
       setTmpUser(newValuesObject);
-    }
-    else{
+    } else {
       const newValues = {
         ...TmpUser,
         [id]: value,
       };
       setTmpUser(newValues);
     }
-    console.log(TmpUser)
+    console.log(TmpUser);
   };
-  
-  const AddProyect = async(id: string) => {
-    let tmpControl = TmpUser.Proyects
-    tmpControl.push(id)
+
+  const AddWork = async (id: String) => {
+    let tmpControl = TmpUser.Experience;
+    tmpControl.push(id);
     console.log(tmpControl);
     const newValuesObject = {
       ...TmpUser,
-      Proyects: tmpControl
+      Experience: tmpControl,
     };
     setTmpUser(newValuesObject);
     await saveUserState();
   };
 
-  const GetProyect = async (useData:any) =>{
-    console.log(useData)
-    let tmpState:Array<Object> = [];
-    useData?.Proyects?.map(async (id:String) => {
-      console.log(id)
-      let p=await GetProyectId(id)
-        tmpState.push(p) 
-    })
-    setProyectsList(tmpState);
-    console.log(tmpState)
-  }
+  const AddProyect = async (id: String) => {
+    let tmpControl = TmpUser.Proyects;
+    tmpControl.push(id);
+    console.log(tmpControl);
+    const newValuesObject = {
+      ...TmpUser,
+      Proyects: tmpControl,
+    };
+    setTmpUser(newValuesObject);
+    await saveUserState();
+  };
+
+  const GetProyect = async (useData: any) => {
+    let tmpState: Array<Object> = [];
+    useData?.Proyects?.map(async (id: String) => {
+      console.log(id);
+      let p = await GetProyectId(id);
+      setProyectsList((state) => [state, p]);
+    });
+    console.log(tmpState);
+  };
 
   const GetUser = async () => {
     if (UserData.User == null) {
@@ -124,21 +133,17 @@ const page = () => {
       let toSet = UserTmp
         ? UserTmp
         : await GetUserID("64d117058ff72de63c820e0e");
-      await GetProyect(toSet)
+      await GetProyect(toSet);
       setInfoUser(toSet);
-      setTmpUser(toSet)
-
+      setTmpUser(toSet);
     } else {
       setInfoUser(UserData.User);
-      setTmpUser(UserData.User)
-      await GetProyect(UserData.User)
+      setTmpUser(UserData.User);
+      await GetProyect(UserData.User);
     }
-   
   };
   useEffect(() => {
     GetUser();
-
-
   }, []);
 
   const Data = {
@@ -171,13 +176,12 @@ const page = () => {
           changeText={changeText}
           InfoUser={InfoUser}
           saveUserState={saveUserState}
-          
         />
 
         <div className="Proyects">
           <div className="techStack">
             <div className="d-flex justify-content-between">
-              <h3>Tech Stack</h3>
+              <h3 className="text-white">Tech Stack</h3>
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#modalStacks"
@@ -201,21 +205,24 @@ const page = () => {
             )}
           </div>
 
-         {
-          InfoUser  ?  <Proyects
-            changeText={changeText}
-            InfoUser={InfoUser}
-            AddProyect={AddProyect}
-            saveUserState={saveUserState}
-            List={ProyectsList}
-          /> : <p>No muestra Proyects</p> 
-         }
+          {InfoUser.Alias.length > 0 && (
+            <Proyects
+              changeText={changeText}
+              InfoUser={InfoUser}
+              AddProyect={AddProyect}
+              saveUserState={saveUserState}
+              List={ProyectsList}
+            />
+          )}
 
-          <Work
-            changeText={changeText}
-            InfoUser={InfoUser}
-            saveUserState={saveUserState}
-          />
+          {InfoUser.Alias.length > 0 && (
+            <Work
+              AddWork={AddWork}
+              changeText={changeText}
+              InfoUser={InfoUser}
+              saveUserState={saveUserState}
+            />
+          )}
         </div>
       </div>
     </>

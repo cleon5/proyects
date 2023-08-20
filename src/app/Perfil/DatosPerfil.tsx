@@ -16,7 +16,7 @@ const DatosPerfil = (props: Props) => {
           <Image src={ImageNoUSer} className="photo" alt="" />
         </div>
         <div className="information">
-          <h3>{props.InfoUser.Alias}</h3>
+          <h3 className="text-white">{props.InfoUser.Alias}</h3>
           <div className="linksSocila">
             <i
               className="fa-brands fa-facebook fa-2xl"
