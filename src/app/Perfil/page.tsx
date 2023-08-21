@@ -180,18 +180,18 @@ const page = () => {
 
         <div className="Proyects">
           <div className="techStack">
-            <div className="d-flex justify-content-between">
-              <h3 className="text-white">Tech Stack</h3>
+            <div className="d-flex justify-content-between px-5 align-items-center">
+              <h2 className="text-white">Tech Stack</h2>
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#modalStacks"
-                className="btn btn-light"
+                className="btn btn-light rounded-2"
               >
                 <i className="fa-solid fa-pen-to-square fa-2xl"></i>
               </button>
             </div>
-
-            <hr />
+          <hr />
+   
             {InfoUser?.Skills.length > 0 ? (
               InfoUser?.Skills?.map((skill, index) => (
                 <span key={index} className={Data.bange[index] + " skillbadge"}>

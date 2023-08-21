@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import { CreateProyect } from "@/services/ConsultsAxios";
 import { GetProyectId} from "@/services/ConsultsAxios";
@@ -81,19 +80,20 @@ const Proyects = (props: Props) => {
   const skills = ["Angular", "Js", "React", "React", "React"];
   return (
     <>
-      <div className="techStack">
-        <div className="d-flex justify-content-between">
+      <div className="techStack">        
+      <hr style={{marginLeft:'25%', width:"50%", color:"gray"}}/>
+        <div className="d-flex justify-content-between mb-3  px-5 align-items-center">
           <h3 className="text-white">Proyects</h3>
           <button
             data-bs-toggle="modal"
             data-bs-target="#modalProyects"
-            className="btn btn-light"
+            className="btn btn-light rounded-2"
           >
             <i className="fa-solid fa-pen-to-square fa-2xl"></i>
           </button>
         </div>
+      <hr />
 
-        <hr />
         <div className="">
           {ProyectState.length > 0 &&
             Object.values(ProyectState)?.map((proyect: any, index: any) => (

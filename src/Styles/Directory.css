@@ -1,0 +1,10 @@
+.Directory {
+    width: 100%;
+    display: flex;
+  }
+  .ListUser {
+    width: 35%;
+  }
+  .Infouser {
+    width: 65%;
+  }

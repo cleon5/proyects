@@ -9,6 +9,13 @@ export const GetUserID = async (id: String) => {
   return response.data;
 };
 
+export const GetAllUser = async () => {
+  let response = await axios.get(`${urlBase}user`);
+  //console.log(response.data);
+  return response.data;
+};
+
+
 export const CreateUser = async (DataUser: Object) => {
   let resp = await axios.post(`${urlBase}user`, DataUser);
   return resp.data;
