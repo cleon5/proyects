@@ -47,14 +47,12 @@ const Work = (props: Props) => {
   async function GetWork() {
     props.InfoUser.Experience.map(async (id: String) => {
       let x = await GetWorkId(id);
-      setWorkState(state=> [...state, x])
+      setWorkState((state) => [...state, x]);
     });
   }
-useEffect(() => {
-  GetWork()
-}, [])
-
-
+  useEffect(() => {
+    GetWork();
+  }, []);
 
   const Data = {
     name: "cleon",
@@ -82,39 +80,49 @@ useEffect(() => {
   return (
     <>
       <div className="techStack">
-      <hr style={{marginLeft:'25%', width:"50%", color:"gray"}}/>
+        <hr style={{ marginLeft: "25%", width: "50%", color: "gray" }} />
         <div className="d-flex justify-content-between px-5 align-items-center ">
-          <h3 className="text-white">Work</h3>
-          <button
-            data-bs-toggle="modal"
-            data-bs-target="#modalWork"
-            className="btn btn-light rounded-2"
-          >
-            <i className="fa-solid fa-pen-to-square fa-2xl"></i>
-          </button>
+          <h2 className="text-white">Work</h2>
+          {props.changeText && (
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#modalWork"
+              className="btn btn-light rounded-2"
+            >
+              <i className="fa-solid fa-pen-to-square fa-2xl"></i>
+            </button>
+          )}
         </div>
         <hr />
         <div className="proyectsList">
-          {WorkState?.map((work:any, index:any) => (
+          {WorkState?.map((work: any, index: any) => (
             <div
-              className="card mb-1 bg-primary text-white " 
-              style={{ width: "88%", backgroundColor: "", borderRadius:"10px"}}
+              className="card mb-1 bg-primary text-white "
+              style={{
+                width: "88%",
+                backgroundColor: "",
+                borderRadius: "10px",
+              }}
               key={index}
             >
               <div className="row g-0">
                 <div className="col-md-4 p-3">
-                  <p className="card-text text-end">{work.StartDate} to {work.EndDate}</p>
                   <p className="card-text text-end">
-                    <small className="text-body-secondary text-capitalize">{work.Tipo}</small>
+                    {work.StartDate} to {work.EndDate}
+                  </p>
+                  <p className="card-text text-end">
+                    <small className="text-body-secondary text-capitalize">
+                      {work.Tipo}
+                    </small>
                   </p>
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                    <h5 className="card-title">{work.Position} - {work.Company}</h5>
+                    <h5 className="card-title">
+                      {work.Position} - {work.Company}
+                    </h5>
                     <hr />
-                    <p className="card-text">
-                    {work.Description}
-                    </p>
+                    <p className="card-text">{work.Description}</p>
                   </div>
                 </div>
               </div>

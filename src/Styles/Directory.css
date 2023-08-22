@@ -8,3 +8,18 @@
   .Infouser {
     width: 65%;
   }
+  .UserOption{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    border: 1px solid black;
+    align-items: center;
+  }
+  .ImagenOption{
+    width: auto;
+    height: 70px;
+    border-radius: 50%;
+  }
+  .OptionName{
+    margin: 10px;
+  }

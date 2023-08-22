@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CreateProyect } from "@/services/ConsultsAxios";
-import { GetProyectId} from "@/services/ConsultsAxios";
+import { GetProyectId } from "@/services/ConsultsAxios";
 
 type Props = {
   changeText: any;
@@ -31,14 +31,13 @@ const Proyects = (props: Props) => {
   async function GetProyect() {
     props.InfoUser.Proyects.map(async (id: String) => {
       let x = await GetProyectId(id);
-      setProyectState(state=> [...state, x])
+      setProyectState((state) => [...state, x]);
     });
   }
 
   useEffect(() => {
     GetProyect();
   }, []);
-
 
   const changeTextProyects = (event: any) => {
     const { id, value, name } = event.target;
@@ -80,19 +79,21 @@ const Proyects = (props: Props) => {
   const skills = ["Angular", "Js", "React", "React", "React"];
   return (
     <>
-      <div className="techStack">        
-      <hr style={{marginLeft:'25%', width:"50%", color:"gray"}}/>
+      <div className="techStack">
+        <hr style={{ marginLeft: "25%", width: "50%", color: "gray" }} />
         <div className="d-flex justify-content-between mb-3  px-5 align-items-center">
-          <h3 className="text-white">Proyects</h3>
-          <button
-            data-bs-toggle="modal"
-            data-bs-target="#modalProyects"
-            className="btn btn-light rounded-2"
-          >
-            <i className="fa-solid fa-pen-to-square fa-2xl"></i>
-          </button>
+          <h2 className="text-white">Proyects</h2>
+          {props.changeText && (
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#modalProyects"
+              className="btn btn-light rounded-2"
+            >
+              <i className="fa-solid fa-pen-to-square fa-2xl"></i>
+            </button>
+          )}
         </div>
-      <hr />
+        <hr />
 
         <div className="">
           {ProyectState.length > 0 &&
@@ -141,7 +142,6 @@ const Proyects = (props: Props) => {
                 </div>
               </div>
             ))}
-
         </div>
       </div>
 
