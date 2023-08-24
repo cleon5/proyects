@@ -1,25 +1,16 @@
-import { CreateWork, GetWorkId } from "@/services/ConsultsAxios";
+import { CreateWork } from "@/services/ConsultsAxios";
 import React, { useState, useEffect } from "react";
+import { WorkModel } from "@/Models/Interfaces";
+
 type Props = {
   changeText: any;
   InfoUser: any;
   saveUserState: any;
   AddWork: any;
-};
-
-type WorkModel = {
-  Position: String;
-  Company: String;
-  Description: String;
-  StartDate: String;
-  EndDate: String;
-  PageWork: String;
-  Ubication: String;
-  Tipo: String;
+  WorkList: any;
 };
 
 const Work = (props: Props) => {
-  const [WorkState, setWorkState] = useState<Array<Object>>([]);
   const [TmpWork, setTmpWork] = useState<WorkModel>({
     Position: "",
     Company: "",
@@ -44,39 +35,7 @@ const Work = (props: Props) => {
     let data = await CreateWork(TmpWork);
     props.AddWork(data._id);
   };
-  async function GetWork() {
-    props.InfoUser.Experience.map(async (id: String) => {
-      let x = await GetWorkId(id);
-      setWorkState((state) => [...state, x]);
-    });
-  }
-  useEffect(() => {
-    GetWork();
-  }, []);
 
-  const Data = {
-    name: "cleon",
-    username: "cleon4",
-    descripcion:
-      "descripcion rapida de los, descripcion rapida de los, descripcion rapida de los",
-    image: "./images/74253.jpg",
-    skills: {
-      hard: ["trabajo en equipo", "trabajo en equipo"],
-      soft: ["html", "css", "react", "html", "css", "react"],
-    },
-    proyects: [],
-    icons: ["fa-brands fa-java", "fa-brands fa-square-js"],
-    bange: [
-      "badge rounded-pill text-bg-primary",
-      "badge rounded-pill text-bg-secondary",
-      "badge rounded-pill text-bg-success",
-      "badge rounded-pill text-bg-danger",
-      "badge rounded-pill text-bg-warning",
-      "badge rounded-pill text-bg-info",
-      "badge rounded-pill text-bg-light",
-      "badge rounded-pill text-bg-dark",
-    ],
-  };
   return (
     <>
       <div className="techStack">
@@ -95,7 +54,7 @@ const Work = (props: Props) => {
         </div>
         <hr />
         <div className="proyectsList">
-          {WorkState?.map((work: any, index: any) => (
+          {props.WorkList?.map((work: any, index: any) => (
             <div
               className="card mb-1 bg-primary text-white "
               style={{

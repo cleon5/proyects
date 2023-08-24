@@ -9,14 +9,15 @@ import Perfil from "./Perfil";
 const page = () => {
   const [UsersList, setUsersList] = useState<Array<Object>>([]);
   const [CurrentUser, setCurrentUser] = useState<any>();
+  const [Select, setSelect] = useState<String|null>(null)
   const GetUsers = async () => {
     let users = await GetAllUser();
     setUsersList(users);
   };
 
   const DisplayUser = async (id: String) => {
+    setSelect(id)
     const user = await GetUserID(id);
-    console.log(user);
     setCurrentUser(null);
     setCurrentUser(user);
   };
@@ -25,7 +26,7 @@ const page = () => {
   }, []);
 
   return (
-    <div className="Directory m-3 ">
+    <div className="Directory p-2 ">
       <div className="ListUser">
         <div>
           <h1 className=" text-center ">Directory of Users</h1>
@@ -34,7 +35,7 @@ const page = () => {
         <div className="mt-2 ">
           {UsersList?.map((user: any, key: any) => (
             <button
-              className="UserOption"
+              className={Select == user._id ? 'UserOption selected': 'UserOption'}
               key={key}
               onClick={() => DisplayUser(user._id)}
             >

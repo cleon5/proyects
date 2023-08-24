@@ -7,7 +7,12 @@ import { LocalStorageGetUser } from "@/services/localStorage";
 import DatosPerfil from "./DatosPerfil";
 import Proyects from "./Proyects";
 import Work from "./Work";
-import { GetProyectId, GetUserID, UpdateUser } from "@/services/ConsultsAxios";
+import {
+  GetProyectId,
+  GetUserID,
+  GetWorkId,
+  UpdateUser,
+} from "@/services/ConsultsAxios";
 
 interface UserInfo2 {
   _id: String;
@@ -118,14 +123,18 @@ const page = () => {
   };
 
   const GetProyect = async (useData: any) => {
-    let tmpState: Array<Object> = [];
     useData?.Proyects?.map(async (id: String) => {
-      console.log(id);
       let p = await GetProyectId(id);
       setProyectsList((state) => [state, p]);
     });
-    console.log(tmpState);
   };
+
+  async function GetWork(useData: any) {
+    useData.Experience.map(async (id: String) => {
+      let x = await GetWorkId(id);
+      setWorkList((state) => [...state, x]);
+    });
+  }
 
   const GetUser = async () => {
     if (UserData.User == null) {
@@ -134,12 +143,14 @@ const page = () => {
         ? UserTmp
         : await GetUserID("64d117058ff72de63c820e0e");
       await GetProyect(toSet);
+      await GetWork(toSet);
       setInfoUser(toSet);
       setTmpUser(toSet);
     } else {
       setInfoUser(UserData.User);
       setTmpUser(UserData.User);
       await GetProyect(UserData.User);
+      await GetWork(UserData.User);
     }
   };
   useEffect(() => {
@@ -190,8 +201,8 @@ const page = () => {
                 <i className="fa-solid fa-pen-to-square fa-2xl"></i>
               </button>
             </div>
-          <hr />
-   
+            <hr />
+
             {InfoUser?.Skills.length > 0 ? (
               InfoUser?.Skills?.map((skill, index) => (
                 <span key={index} className={Data.bange[index] + " skillbadge"}>
@@ -221,6 +232,7 @@ const page = () => {
               changeText={changeText}
               InfoUser={InfoUser}
               saveUserState={saveUserState}
+              WorkList={WorkList}
             />
           )}
         </div>

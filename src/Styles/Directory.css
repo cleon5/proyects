@@ -3,10 +3,12 @@
     display: flex;
   }
   .ListUser {
-    width: 35%;
+    width: 25%;
   }
   .Infouser {
-    width: 65%;
+    width: 74%;
+    margin: 0 auto;
+
   }
   .UserOption{
     width: 100%;
@@ -22,4 +24,7 @@
   }
   .OptionName{
     margin: 10px;
+  }
+  .selected{
+    background-color: aqua;
   }

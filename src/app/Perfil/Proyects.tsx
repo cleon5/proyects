@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CreateProyect } from "@/services/ConsultsAxios";
-import { GetProyectId } from "@/services/ConsultsAxios";
+import { ProyectModel } from "@/Models/Interfaces";
 
 type Props = {
   changeText: any;
@@ -10,16 +10,7 @@ type Props = {
   List: any;
 };
 
-type ProyectModel = {
-  Title: String;
-  Description: String;
-  Image: String;
-  Skills: Array<String>;
-  Links: { GitHub: String; url: String };
-};
-
 const Proyects = (props: Props) => {
-  const [ProyectState, setProyectState] = useState<Array<Object>>([]);
   const [TmpProyect, setTmpProyect] = useState<ProyectModel>({
     Title: "",
     Description: "",
@@ -28,16 +19,7 @@ const Proyects = (props: Props) => {
     Links: { GitHub: "", url: "" },
   });
 
-  async function GetProyect() {
-    props.InfoUser.Proyects.map(async (id: String) => {
-      let x = await GetProyectId(id);
-      setProyectState((state) => [...state, x]);
-    });
-  }
-
-  useEffect(() => {
-    GetProyect();
-  }, []);
+  useEffect(() => {}, []);
 
   const changeTextProyects = (event: any) => {
     const { id, value, name } = event.target;
@@ -96,8 +78,8 @@ const Proyects = (props: Props) => {
         <hr />
 
         <div className="">
-          {ProyectState.length > 0 &&
-            Object.values(ProyectState)?.map((proyect: any, index: any) => (
+          {props.List.length > 0 &&
+            Object.values(props.List)?.map((proyect: any, index: any) => (
               <div
                 className="card text-white bg-primary mb-3"
                 key={index}
